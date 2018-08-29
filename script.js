@@ -5,7 +5,7 @@ function Time(starts, ends, days, name) {
   this.name = name;
 }
 
-var classNames = ['DSA 1', 'DSA 1 Lab', 'COA 1', 'COA 1 Lab', 'ENGR 1624', 'CHEM 1610', 'CHEM 1610 Discussion', 'CHEM 1611 Lab', 'APMA 2120'];
+var classNames = ['DSA 1', 'DSA 1 Lab', 'COA 1', 'COA 1 Lab', 'ENGR 1624', 'CHEM 1610', 'CHEM 1610 Disc.', 'CHEM 1611 Lab', 'APMA 2120'];
 var classTimes = [[new Time([12, 12, 12], [13, 13, 13], [1, 3, 5])],
                   [new Time([18.5], [19.5], [3]), new Time([18.5], [19.5], [4])],
                   [new Time([14, 14, 14], [15, 15, 15], [1, 3, 5])],
@@ -28,29 +28,86 @@ var ctx = c.getContext("2d");
 
 ctx.font = "20px Helvetica";
 
+var canvasWidth = 1600;
+var canvasHeight = 900;
+
 var boxWidth = 200;
 var hourHeight = 30;
 
+var xOffset = 20;
+var yOffset = 100;
+
 var visibleCombo = 0;
 
+var twelveHourTime = false;
 
 
 
 function displaySchedule(names, times) {
+
+  function horizLine(y) {
+    ctx.fillStyle = 'gray';
+    ctx.strokeStyle = 'gray';
+
+    ctx.beginPath();
+    ctx.moveTo(xOffset, hourHeight * y + yOffset);
+    if (y == 12) {
+      ctx.fillStyle = 'black';
+      ctx.strokeStyle = 'black';
+    }
+    ctx.lineTo(boxWidth * 7, hourHeight * y + yOffset);
+
+    var yText = y;
+
+    if (twelveHourTime) {
+      if (y > 12) {
+        yText = y - 12;
+      } else if (y == 0) {
+        yText = 12;
+      }
+    }
+    ctx.fillText(yText, xOffset, hourHeight * y + yOffset);
+    ctx.stroke();
+  }
+
+  function vertLine(x) {
+    ctx.beginPath();
+    ctx.moveTo(boxWidth * x + xOffset, yOffset);
+    ctx.lineTo(boxWidth * x + xOffset, hourHeight * 24 + yOffset);
+    ctx.stroke();
+  }
+
+  function box(x, y, duration, name) {
+    ctx.fillStyle = 'blue';
+    ctx.fillRect(x * boxWidth + xOffset, y * hourHeight + yOffset, boxWidth, duration * hourHeight);
+    ctx.fillStyle = 'white';
+    ctx.fillText(times[i].name, x * boxWidth + xOffset, y * hourHeight + yOffset + 20);
+  }
+
   //input should be [class1, class2, ...] and [Time(), Time(), ...]
-  ctx.clearRect(0, 0, 1600, 900);
+  ctx.clearRect(0, 0, canvasWidth, canvasHeight);
   ctx.stroke();
+
+  for (var i = 0; i < 24; i++) {
+    horizLine(i);
+  }
+
+  for (var i = 1; i < 7; i++) {
+    vertLine(i);
+  }
 
   for (var i = 0; i < times.length; i++) {
     var startTime = times[i].starts;
     var endTime = times[i].ends;
     var duration = endTime - startTime;
-
     var day = times[i].days;
-    ctx.fillStyle = "blue";
-    ctx.fillRect(day * boxWidth + 20, startTime * hourHeight, boxWidth, duration * hourHeight);
-    ctx.fillStyle = "white";
-    ctx.fillText(times[i].name, day * boxWidth + 20, startTime * hourHeight + 20);
+    var name = times[i].name;
+
+    box(day, startTime, duration, name);
+    ctx.fillStyle = 'blue';
+    ctx.fillRect(day * boxWidth + xOffset, startTime * hourHeight + yOffset, boxWidth, duration * hourHeight);
+    ctx.fillStyle = 'white';
+    ctx.fillText(times[i].name, day * boxWidth + xOffset, startTime * hourHeight + yOffset + 20);
   }
 
   ctx.stroke();
