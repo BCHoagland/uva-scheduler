@@ -102,11 +102,11 @@ $('form').submit(function(event) {
     var hyphenIndex = times.indexOf('-');
     var endIndex = times.indexOf('_');
     while (hyphenIndex > -1) {
-      startArr.push(parseInt(times.substring(startIndex, hyphenIndex)));
+      startArr.push(parseFloat(times.substring(startIndex, hyphenIndex)));
       if (endIndex > -1) {
-        endArr.push(parseInt(times.substring(hyphenIndex + 1, endIndex)));
+        endArr.push(parseFloat(times.substring(hyphenIndex + 1, endIndex)));
       } else {
-        endArr.push(parseInt(times.substring(hyphenIndex + 1)));
+        endArr.push(parseFloat(times.substring(hyphenIndex + 1)));
       }
 
       endIndex = endIndex == -1 ? times.length : endIndex;
