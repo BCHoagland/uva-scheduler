@@ -6,78 +6,81 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
-  <p>TODO: fix error when having more than 10 hours per class wrecks things; string parsing turns a '10' into '1', '0'</p>
-  <form>
-    <div>
-      <input name="name" value="c1"></input>
-      <input name="days" value="M_W_F"></input>
-      <input name="times" value="8-9_8-9_8-9"></input>
+  <!-- <p>TODO: fix error when having more than 10 hours per class wrecks things; string parsing turns a '10' into '1', '0'</p> -->
+  <form id="classInputs">
+    <!--<div>
+      <input name="name" value="c1">
+      <input name="days" value="M_W_F">
+      <input name="times" value="8-9_8-9_8-9">
     </div>
 
     <div>
-      <input name="name" value=""></input>
-      <input name="days" value="T_R"></input>
-      <input name="times" value="14.5-15.5_14.5-15.5"></input>
+      <input name="name" value="">
+      <input name="days" value="T_R">
+      <input name="times" value="14.5-15.5_14.5-15.5">
     </div>
 
     <div>
-      <input name="name" value="c2"></input>
-      <input name="days" value="T_R"></input>
-      <input name="times" value="10-12_10-12"></input>
+      <input name="name" value="c2">
+      <input name="days" value="T_R">
+      <input name="times" value="10-12_10-12">
     </div>
 
     <div>
-      <input name="name" value=""></input>
-      <input name="days" value="T_R"></input>
-      <input name="times" value="12-14_12-14"></input>
+      <input name="name" value="">
+      <input name="days" value="T_R">
+      <input name="times" value="12-14_12-14">
     </div>
 
     <div>
-      <input name="name" value=""></input>
-      <input name="days" value="M_F"></input>
-      <input name="times" value="10-12_10-12"></input>
+      <input name="name" value="">
+      <input name="days" value="M_F">
+      <input name="times" value="10-12_10-12">
     </div>
 
     <div>
-      <input name="name" value="c3"></input>
-      <input name="days" value="T"></input>
-      <input name="times" value="8-11"></input>
+      <input name="name" value="c3">
+      <input name="days" value="T">
+      <input name="times" value="8-11">
     </div>
 
     <div>
-      <input name="name" value=""></input>
-      <input name="days" value="R"></input>
-      <input name="times" value="8-11"></input>
+      <input name="name" value="">
+      <input name="days" value="R">
+      <input name="times" value="8-11">
     </div>
 
     <div>
-      <input name="name" value="c4"></input>
-      <input name="days" value="M_W_F"></input>
-      <input name="times" value="14-15_14-15_14-15"></input>
+      <input name="name" value="c4">
+      <input name="days" value="M_W_F">
+      <input name="times" value="14-15_14-15_14-15">
     </div>
 
     <div>
-      <input name="name" value=""></input>
-      <input name="days" value="T_R"></input>
-      <input name="times" value="15-16_15-16"></input>
+      <input name="name" value="">
+      <input name="days" value="T_R">
+      <input name="times" value="15-16_15-16">
     </div>
 
     <div>
-      <input name="name" value="c5"></input>
-      <input name="days" value="M_W_F"></input>
-      <input name="times" value="10-11_10-11_10-11"></input>
+      <input name="name" value="c5">
+      <input name="days" value="M_W_F">
+      <input name="times" value="10-11_10-11_10-11">
     </div>
 
     <div>
-      <input name="name" value=""></input>
-      <input name="days" value="M_W_F"></input>
-      <input name="times" value="11-12_11-12_11-12"></input>
-    </div>
-
-    <button type="submit">Set Courses</button>
+      <input name="name" value="">
+      <input name="days" value="M_W_F">
+      <input name="times" value="11-12_11-12_11-12">
+    </div>-->
   </form>
 
-  <button onclick="showNextCombo()">Next Combo</button>
+  <div id="buttons">
+    <button id="addInputBtn">Add New Line</button>
+    <button id="setCoursesBtn">Set Courses</button>
+    <button onclick="showNextCombo()">Next Combo</button>
+  </div>
+
   <canvas id="schedule" width="1600" height="900"></canvas>
   <script type="text/javascript" src="script.js"></script>
 </body>

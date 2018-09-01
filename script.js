@@ -2,30 +2,18 @@ var classNames = [];
 var classTimes = [];
 
 var w = [];
-
-
-
+var visibleCombo = 0;
 
 var c = document.getElementById("schedule");
 var ctx = c.getContext("2d");
-
 ctx.font = "20px Helvetica";
-
-var canvasWidth = 1600;
-var canvasHeight = 900;
 
 var boxWidth = 200;
 var hourHeight = 30;
-
 var xOffset = 20;
 var yOffset = 100;
 
-var visibleCombo = 0;
-
 var twelveHourTime = false;
-
-
-
 
 function Time(starts, ends, days, name) {
   this.starts = starts;
@@ -33,6 +21,22 @@ function Time(starts, ends, days, name) {
   this.days = days;
   this.name = name;
 }
+
+$('#addInputBtn').click(function() {
+  var container = document.getElementById('classInputs');
+  var div = document.createElement('div');
+  var i0 = document.createElement('input');
+  i0.name = 'name';
+  var i1 = document.createElement('input');
+  i1.name = 'days';
+  var i2 = document.createElement('input');
+  i2.name = 'times';
+
+  div.appendChild(i0);
+  div.appendChild(i1);
+  div.appendChild(i2);
+  container.appendChild(div);
+});
 
 function getFormSubstringFromIndex(str, sub, index) {
   var endIndex = str.indexOf("&", index);
@@ -68,13 +72,12 @@ function dayStrToNum(str) {
   }
 }
 
-$('form').submit(function(event) {
+$('#setCoursesBtn').click(function(event) {
   event.preventDefault();
-  clasNames = [];
-  classTimes = [];
 
+  clearSchedule(true);
 
-  var formData = $(this).serialize();
+  var formData = $('#classInputs').serialize();
 
   var nameIndex = formData.indexOf("name");
   var daysIndex = formData.indexOf("days");
@@ -89,38 +92,40 @@ $('form').submit(function(event) {
     var days = getFormSubstringFromIndex(formData, "days", daysIndex + 5);
     var times = getFormSubstringFromIndex(formData, "times", timesIndex + 6);
 
-    var isNewClass = name == '' ? false : true;
+    if (!(name == '' && days == '' && times == '')) {
+      var isNewClass = name == '' ? false : true;
 
-    var daysArr = [];
-    for (var i = 0; i < days.length; i += 2) {
-      daysArr.push(dayStrToNum(days.substring(i, i + 1)));
-    }
-
-    var startArr = [];
-    var endArr = [];
-    var startIndex = 0;
-    var hyphenIndex = times.indexOf('-');
-    var endIndex = times.indexOf('_');
-    while (hyphenIndex > -1) {
-      startArr.push(parseFloat(times.substring(startIndex, hyphenIndex)));
-      if (endIndex > -1) {
-        endArr.push(parseFloat(times.substring(hyphenIndex + 1, endIndex)));
-      } else {
-        endArr.push(parseFloat(times.substring(hyphenIndex + 1)));
+      var daysArr = [];
+      for (var i = 0; i < days.length; i += 2) {
+        daysArr.push(dayStrToNum(days.substring(i, i + 1)));
       }
 
-      endIndex = endIndex == -1 ? times.length : endIndex;
-      startIndex = endIndex + 1;
-      hyphenIndex = times.indexOf('-', startIndex);
-      endIndex = times.indexOf('_', startIndex);
-    }
+      var startArr = [];
+      var endArr = [];
+      var startIndex = 0;
+      var hyphenIndex = times.indexOf('-');
+      var endIndex = times.indexOf('_');
+      while (hyphenIndex > -1) {
+        startArr.push(parseFloat(times.substring(startIndex, hyphenIndex)));
+        if (endIndex > -1) {
+          endArr.push(parseFloat(times.substring(hyphenIndex + 1, endIndex)));
+        } else {
+          endArr.push(parseFloat(times.substring(hyphenIndex + 1)));
+        }
 
-    var entry = new Time(startArr, endArr, daysArr);
-    if (isNewClass) {
-      classNames.push(name);
-      classTimes.push([entry]);
-    } else {
-      classTimes[classTimes.length - 1].push(entry);
+        endIndex = endIndex == -1 ? times.length : endIndex;
+        startIndex = endIndex + 1;
+        hyphenIndex = times.indexOf('-', startIndex);
+        endIndex = times.indexOf('_', startIndex);
+      }
+
+      var entry = new Time(startArr, endArr, daysArr);
+      if (isNewClass) {
+        classNames.push(name);
+        classTimes.push([entry]);
+      } else {
+        classTimes[classTimes.length - 1].push(entry);
+      }
     }
 
     baseIndex = timesIndex + 5;
@@ -153,7 +158,14 @@ $('form').submit(function(event) {
 //
 // console.log(classTimes);
 
-
+function clearSchedule(clearArrs) {
+  if (clearArrs) {
+    classNames = [];
+    classTimes = [];
+    w = [];
+  }
+  ctx.clearRect(0, 0, c.width, c.height);
+}
 
 function displaySchedule(names, times) {
 
@@ -168,6 +180,7 @@ function displaySchedule(names, times) {
       ctx.strokeStyle = 'black';
     }
     ctx.lineTo(boxWidth * 7, hourHeight * y + yOffset);
+    ctx.closePath();
 
     var yText = y;
 
@@ -186,6 +199,7 @@ function displaySchedule(names, times) {
     ctx.beginPath();
     ctx.moveTo(boxWidth * x + xOffset, yOffset);
     ctx.lineTo(boxWidth * x + xOffset, hourHeight * 24 + yOffset);
+    ctx.closePath();
     ctx.stroke();
   }
 
@@ -196,9 +210,7 @@ function displaySchedule(names, times) {
     ctx.fillText(times[i].name, x * boxWidth + xOffset, y * hourHeight + yOffset + 20);
   }
 
-  //input should be [class1, class2, ...] and [Time(), Time(), ...]
-  ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-  ctx.stroke();
+  clearSchedule(false);
 
   for (var i = 0; i < 24; i++) {
     horizLine(i);
@@ -322,5 +334,3 @@ function showNextCombo() {
     visibleCombo = (visibleCombo + 1) % w.length;
   }
 }
-
-// console.log(w);
