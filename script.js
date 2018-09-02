@@ -6,9 +6,9 @@ var visibleCombo = 0;
 
 var c = document.getElementById("schedule");
 var ctx = c.getContext("2d");
-ctx.font = "20px Helvetica";
+// ctx.font = "40px Helvetica";
 
-var boxWidth = 200;
+var boxWidth = $(window).width() * 0.68 / 7;
 var hourHeight = 30;
 var xOffset = 20;
 var yOffset = 100;
@@ -22,15 +22,24 @@ function Time(starts, ends, days, name) {
   this.name = name;
 }
 
+$(document).ready(function() {
+  c.width = $(window).width() * 0.7;
+  c.height = $(window).height();
+  $('#schedule').css('left', ($(window).width() * 0.3) + 'px');
+});
+
 $('#addInputBtn').click(function() {
   var container = document.getElementById('classInputs');
   var div = document.createElement('div');
   var i0 = document.createElement('input');
   i0.name = 'name';
+  i0.type = 'text';
   var i1 = document.createElement('input');
   i1.name = 'days';
+  i1.type = 'text';
   var i2 = document.createElement('input');
   i2.name = 'times';
+  i2.type = 'text';
 
   div.appendChild(i0);
   div.appendChild(i1);
@@ -137,26 +146,6 @@ $('#setCoursesBtn').click(function(event) {
   w = getWorkingSchedules(classNames, classTimes);
   visibleCombo = 0;
 });
-
-
-
-
-// var classNames = ['DSA 1', 'DSA 1 Lab', 'COA 1', 'COA 1 Lab', 'ENGR 1624', 'CHEM 1610', 'CHEM 1610 Disc.', 'CHEM 1611 Lab', 'APMA 2120'];
-// var classTimes = [[new Time([12, 12, 12], [13, 13, 13], [1, 3, 5])],
-//                   [new Time([18.5], [19.5], [3]), new Time([18.5], [19.5], [4])],
-//                   [new Time([14, 14, 14], [15, 15, 15], [1, 3, 5])],
-//                   [new Time([18.5], [19.5], [1]), new Time([18.5], [19.5], [2])],
-//                   [new Time([15.5, 15.5], [16.5, 16.5], [2, 4]), new Time([14, 14], [15, 15], [2, 4]), new Time([14, 14], [15, 15], [1, 5]), new Time([8, 8], [9, 9], [2, 4])],
-//                   [new Time([9, 9, 9], [10, 10, 10], [1, 3, 5]), new Time([14, 14], [15, 15], [2, 4]), new Time([15.5, 18.5], [16.5, 19.5], [2, 4])],
-//                   [new Time([18], [19.5], [1]), new Time([19.5], [21], [1]), new Time([18], [19.5], [2])],
-//                   [new Time([14], [17], [3]), new Time([14], [17], [1]), new Time([9], [12], [2]), new Time([14], [17], [2]), new Time([14], [17], [4]), new Time([14], [17], [5])],
-//                   [new Time([11, 11, 13, 11], [12, 12, 14, 12], [1, 3, 4, 5]), new Time([13, 13, 8.5, 13], [14, 14, 9.5, 14], [1, 3, 4, 5])]];
-// var classNames = ['a', 'b', 'c'];
-// var classTimes = [[new Time([12, 12, 12], [13, 13, 13], [1, 3, 5])],
-//                   [new Time([8], [9], [3]), new Time([10], [11], [4])],
-//                   [new Time([10, 11, 11], [11, 12, 12], [1, 3, 5])]];
-//
-// console.log(classTimes);
 
 function clearSchedule(clearArrs) {
   if (clearArrs) {
@@ -327,6 +316,10 @@ function getWorkingSchedules(names, times) {
 
   return workingCombos;
 }
+
+$('#nextComboBtn').click(function() {
+  showNextCombo();
+});
 
 function showNextCombo() {
   if (w.length > 0) {
