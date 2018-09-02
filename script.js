@@ -87,6 +87,7 @@ $('#setCoursesBtn').click(function(event) {
   clearSchedule(true);
 
   var formData = $('#classInputs').serialize();
+  formData = formData.replace(/%20/g, '');
 
   var nameIndex = formData.indexOf("name");
   var daysIndex = formData.indexOf("days");
@@ -104,16 +105,18 @@ $('#setCoursesBtn').click(function(event) {
     if (!(name == '' && days == '' && times == '')) {
       var isNewClass = name == '' ? false : true;
 
+      //extract each day the class is being offered on
       var daysArr = [];
-      for (var i = 0; i < days.length; i += 2) {
+      for (var i = 0; i < days.length; i += 4) {
         daysArr.push(dayStrToNum(days.substring(i, i + 1)));
       }
 
+      //extract each time the class is being offered for the given days
       var startArr = [];
       var endArr = [];
       var startIndex = 0;
       var hyphenIndex = times.indexOf('-');
-      var endIndex = times.indexOf('_');
+      var endIndex = times.indexOf('%2C');
       while (hyphenIndex > -1) {
         startArr.push(parseFloat(times.substring(startIndex, hyphenIndex)));
         if (endIndex > -1) {
@@ -123,9 +126,9 @@ $('#setCoursesBtn').click(function(event) {
         }
 
         endIndex = endIndex == -1 ? times.length : endIndex;
-        startIndex = endIndex + 1;
+        startIndex = endIndex + 3;
         hyphenIndex = times.indexOf('-', startIndex);
-        endIndex = times.indexOf('_', startIndex);
+        endIndex = times.indexOf('%2C', startIndex);
       }
 
       var entry = new Time(startArr, endArr, daysArr);
