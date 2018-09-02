@@ -5,7 +5,6 @@ body {
 #controls {
   width: 30%;
   height: 100%;
-  /* border-right: 4px solid #ddd; */
   position: absolute;
   left: 0;
   top: 0;
@@ -43,7 +42,7 @@ body {
 
 input {
   width: 33.3333%;
-  font-size: 1em;
+  font-size: 1.2em;
   box-sizing: border-box;
 }
 
