@@ -114,21 +114,14 @@ $('#setCoursesBtn').click(function(event) {
       //extract each time the class is being offered for the given days
       var startArr = [];
       var endArr = [];
-      var startIndex = 0;
-      var hyphenIndex = times.indexOf('-');
-      var endIndex = times.indexOf('%2C');
-      while (hyphenIndex > -1) {
-        startArr.push(parseFloat(times.substring(startIndex, hyphenIndex)));
-        if (endIndex > -1) {
-          endArr.push(parseFloat(times.substring(hyphenIndex + 1, endIndex)));
-        } else {
-          endArr.push(parseFloat(times.substring(hyphenIndex + 1)));
-        }
 
-        endIndex = endIndex == -1 ? times.length : endIndex;
-        startIndex = endIndex + 3;
-        hyphenIndex = times.indexOf('-', startIndex);
-        endIndex = times.indexOf('%2C', startIndex);
+      var hyphenIndex = times.indexOf('-');
+      var startTime = parseFloat(times.substring(0, hyphenIndex));
+      var endTime = parseFloat(times.substring(hyphenIndex + 1));
+
+      for (var i = 0; i < daysArr.length; i += 1) {
+        startArr.push(startTime);
+        endArr.push(endTime);
       }
 
       var entry = new Time(startArr, endArr, daysArr);
